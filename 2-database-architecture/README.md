@@ -23,4 +23,5 @@ Attached within this [directory](./er-diagram) is the .png format of the ER Diag
 
 
 Click [here](./er-diagram/Workout%20Tracker%20ER%20Diagram.png) to view the .png version.
+
 Click [here](https://dbdiagram.io/d/Workout-Tracker-ER-Diagram-682eadceb9f7446da39ef2b4) to view the online version.
