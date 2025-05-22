@@ -1,0 +1,289 @@
+
+// Workout Tracker ER Diagram DBML Code
+
+Table workout_plan {
+  id int [primary key, increment]
+  name varchar
+  goal varchar
+  workout_session_id int
+  plan_type_id int
+  plan_type type
+  start date
+  end date
+  user_id int
+  status_id int
+  status status
+  comments text
+
+  created_at timestamp
+  updated_at timestamp
+}
+
+Table workout_session {
+  id int [primary key]
+  name varchar
+  description text
+  datetime datetime
+  status_id int
+  status status
+  comments text
+  workout_group_id int
+  user_id integer [not null]
+
+  created_at timestamp
+  updated_at timestamp
+
+  NOTE: '''
+      This details the plan for a 
+      single workout session.
+    '''
+}
+
+Table user {
+  id int [primary key]
+  username varchar unique
+  name varchar
+  email varchar unique
+  password varchar
+  role_id int
+  role role
+
+  level_id int
+  level level
+
+  workout_plan_id int
+  workout_session_id int
+  workout_group_id int
+
+  created_at timestamp
+  updated_at timestamp
+
+  note: '''
+      This is the base entity 
+      model of a User
+    '''
+}
+
+Table workout {
+  id int [primary key]
+  name varchar
+  description text
+  muscle_group_id int
+  muscle_group varchar
+  category_id int
+  category varchar
+  difficulty_id int
+  difficulty difficulty
+  status_id int
+  status status
+
+  created_at timestamp
+  updated_at timestamp
+
+  note: '''
+    This is the base entity 
+    model of a workout
+    '''
+}
+
+Table workout_group {
+  id int pk [increment]
+  workout_id int
+  workout workout
+  reps int
+  sets int
+  weight int
+  status_id int
+  status status
+  comments text
+
+  user_id int
+
+  created_at timestamp
+  updated_at timestamp
+
+  note: '''
+    This entity represents each 
+    separate workout group, including sets 
+    and reps.
+    '''
+}
+
+Table status {
+  id int pk [not null]
+  description text
+
+  note: '''
+    0 - pending
+    1 - active
+    2 - completed
+    3 - not_completed
+  '''
+}
+
+Enum status {
+  pending
+  active
+  completed
+  not_completed
+}
+
+Table difficulty {
+  id int pk [not null]
+  description text
+
+  note: '''
+    0 - easy
+    1 - medium
+    2 - hard
+  '''
+}
+
+Enum difficulty {
+  easy
+  medium
+  hard
+}
+
+Table level {
+  id int pk [not null]
+  description text
+
+  note: '''
+    0 - beginner
+    1 - intermediate
+    2 - advanced
+  '''
+}
+
+Enum level {
+  beginner
+  intermediate
+  advanced
+}
+
+Table role {
+  id int pk [not null]
+  description text
+  note: '''
+    0 - user
+    1 - admin
+  '''
+}
+
+Enum role {
+  user
+  admin
+}
+
+Table muscle_group {
+  id int pk [not null]
+  description text
+
+  note: '''
+    ABDOMINALS
+    ARMS
+    BACKS
+    LEGS
+    CHESTS
+    SHOULDERS
+  '''
+}
+
+Enum muscle_group {
+  ABDOMINALS
+  ABS
+  ARMS
+  BACKS
+  BICEPS
+  CALVES
+  CHESTS
+  FOREARMS
+  GLUTES
+  LATS
+  LEGS
+  NECK
+  SHOULDERS
+  THIGHTS
+}
+
+Table category {
+  id int pk [not null]
+  description text
+  note: '''
+    CARDIO
+    CALISTHENICS
+    WEIGHTLIFTING
+    STRENGTH
+    ENDURANCE
+    FLEXIBILITY
+    MOBILITY
+  '''
+}
+
+Enum category {
+  CARDIO
+  CALISTHENICS
+  WEIGHTLIFTNG
+  STRENGTH
+  ENDURANCE
+  FLEXIBILITY
+  MOBILITY
+}
+
+Table plan_type {
+  id int pk [not null]
+  description text
+  note: '''
+    SPRINT
+    RECURRING
+  '''
+}
+
+Enum plan_type {
+  SPRINT  // Workout plan with a defined end date
+  RECURRING // perpetually continuous workout plan
+}
+
+
+
+
+Ref: workout_session.user_id > user.id // many workout session to one user;
+Ref: user.workout_session_id < workout_session.id // one user to many workout sessions
+
+Ref: workout_plan.user_id > user.id // many workout plans to one user
+Ref: user.workout_plan_id < workout_plan.id // one user to many workout plans
+
+Ref: workout_group.user_id > user.id // many workout groups to one user
+Ref: user.workout_group_id < workout_group.id // one user to many workout groups
+
+// status
+Ref: workout_plan.status_id > status.id
+Ref: workout_session.status_id > status.id
+Ref: workout_group.status_id > status.id
+Ref: workout.status_id > status.id
+
+// difficulty
+Ref: workout.difficulty_id > difficulty.id
+
+// level
+Ref: user.level_id > level.id
+
+// role
+Ref: user.role_id > role.id
+
+// muscle group
+Ref: workout.muscle_group_id > muscle_group.id
+
+// category
+Ref: workout.category_id > category.id
+
+Ref: workout_group.workout_id > workout.id
+
+Ref: workout_session.workout_group_id > workout_group.id
+
+Ref: workout_plan.workout_session_id > workout_session.id  // many workout plans to many workout sessions
+
+// type
+Ref: workout_plan.plan_type_id > plan_type.id
+
