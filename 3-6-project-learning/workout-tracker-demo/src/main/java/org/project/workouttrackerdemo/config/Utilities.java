@@ -10,7 +10,7 @@ public class Utilities {
 
         if (!identifier.isBlank()){
 
-            if (identifier.contains("@") && identifier.endsWith(".com")) {
+            if (identifier.contains("@") && identifier.endsWith(".com")) {  // should fix this later.
                 return "email";
             }
 

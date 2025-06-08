@@ -29,7 +29,7 @@ public class MyUserDetailsService implements UserDetailsService {
             default -> throw new IllegalStateException("Unexpected value: " + sortIdentifier(identifier));  // same as above
         }
 
-        if (user != null) {
+        if (user == null) {
             throw new RuntimeException("No such user");  // custom exception for incorrect or non-existent username
         }
 

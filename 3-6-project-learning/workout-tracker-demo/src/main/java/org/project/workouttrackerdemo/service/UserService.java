@@ -1,11 +1,8 @@
 package org.project.workouttrackerdemo.service;
 
-import java.time.LocalDateTime;
-
-import static org.project.workouttrackerdemo.config.Utilities.getIdentifier;
+import lombok.AllArgsConstructor;
 import org.project.workouttrackerdemo.dto.UserLoginDTO;
 import org.project.workouttrackerdemo.dto.UserRegisterDTO;
-import static org.project.workouttrackerdemo.dto.UserRegisterDTO.setUser;
 import org.project.workouttrackerdemo.dto.UserUpdateDTO;
 import org.project.workouttrackerdemo.model.User;
 import org.project.workouttrackerdemo.repository.UserRepository;
@@ -16,10 +13,12 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import lombok.AllArgsConstructor;
+import java.time.LocalDateTime;
+
+import static org.project.workouttrackerdemo.config.Utilities.getIdentifier;
+import static org.project.workouttrackerdemo.dto.UserRegisterDTO.setUser;
 
 @Service
 @AllArgsConstructor
@@ -27,14 +26,12 @@ public class UserService {
 
     private final UserRepository userRepository;
     private final AuthenticationManager authenticationManager;
-    private final PasswordEncoder passwordEncoder;
 
     public ResponseEntity<String> registerUser(UserRegisterDTO userRegisterDTO) {
         User user;
         user = setUser(userRegisterDTO);
-
-//        user.setPassword(new BCryptPasswordEncoder(12).encode(user.getPassword()));
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        System.out.println(user.getPassword());
+        user.setPassword(new BCryptPasswordEncoder(12).encode(user.getPassword()));
         user.setCreatedAt(LocalDateTime.now());
         user.setUpdatedAt(LocalDateTime.now());
 

@@ -19,7 +19,7 @@ public record UserRegisterDTO(
         user.setUsername(userRegisterDTO.username);
         user.setName(userRegisterDTO.name);
         user.setEmail(userRegisterDTO.email);
-        user.setPassword(userRegisterDTO.password.toUpperCase());
+        user.setPassword(userRegisterDTO.password);
         user.setRole(userRegisterDTO.role.toUpperCase());
         user.setRole_id(Role.valueOf(user.getRole()));
         user.setLevel(userRegisterDTO.level);
