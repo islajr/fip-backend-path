@@ -28,7 +28,8 @@ public class SecurityConfig{
                 .formLogin(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(request -> request.requestMatchers(
                         "/user/register",
-                        "/user/login"
+                        "/user/login",
+                        "/user/delete"
                 ).permitAll().anyRequest().authenticated())
                 .httpBasic(Customizer.withDefaults())
                 .logout(Customizer.withDefaults())

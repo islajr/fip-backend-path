@@ -12,12 +12,14 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 
 import static org.project.workouttrackerdemo.config.Utilities.getIdentifier;
+import static org.project.workouttrackerdemo.config.Utilities.isUserAuthorized;
 import static org.project.workouttrackerdemo.dto.UserRegisterDTO.setUser;
 
 @Service
@@ -61,7 +63,14 @@ public class UserService {
         return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Forbidden: Please login first");
     }
 
-    public ResponseEntity<String> deleteUser() {
-        return null;
+    public ResponseEntity<String> deleteUser(String username) {
+        if (!isUserAuthorized(username))
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("You cannot complete this action!");
+        if (userRepository.existsByUsername(username)) {
+            User user = userRepository.findUserByUsername(username);
+            userRepository.delete(user);
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).body("Successfully deleted user!");
+        }
+        throw new UsernameNotFoundException("No such user!");   // customize exception later.
     }
 }

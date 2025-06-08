@@ -34,4 +34,10 @@ public class Utilities {
 
         return userPrincipal.getUsername();
     }
+
+    public static boolean isUserAuthorized(String username) {
+        String currentUsername = SecurityContextHolder.getContext().getAuthentication().getName();
+
+        return username.equals(currentUsername);
+    }
 }

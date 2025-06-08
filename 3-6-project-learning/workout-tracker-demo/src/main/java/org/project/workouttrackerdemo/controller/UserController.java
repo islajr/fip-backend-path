@@ -31,7 +31,7 @@ public class UserController {
     }
 
     @DeleteMapping("/delete")
-    public ResponseEntity<String> deleteUser() {
-        return userService.deleteUser();
+    public ResponseEntity<String> deleteUser(@RequestParam String username) {
+        return userService.deleteUser(username);
     }
 }
