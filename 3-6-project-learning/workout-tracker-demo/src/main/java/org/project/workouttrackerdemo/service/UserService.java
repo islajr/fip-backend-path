@@ -1,9 +1,11 @@
 package org.project.workouttrackerdemo.service;
 
-import lombok.AllArgsConstructor;
-import org.project.workouttrackerdemo.config.Utilities;
+import java.time.LocalDateTime;
+
+import static org.project.workouttrackerdemo.config.Utilities.getIdentifier;
 import org.project.workouttrackerdemo.dto.UserLoginDTO;
 import org.project.workouttrackerdemo.dto.UserRegisterDTO;
+import static org.project.workouttrackerdemo.dto.UserRegisterDTO.setUser;
 import org.project.workouttrackerdemo.dto.UserUpdateDTO;
 import org.project.workouttrackerdemo.model.User;
 import org.project.workouttrackerdemo.repository.UserRepository;
@@ -14,12 +16,10 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
-
-import static org.project.workouttrackerdemo.config.Utilities.*;
-import static org.project.workouttrackerdemo.dto.UserRegisterDTO.setUser;
+import lombok.AllArgsConstructor;
 
 @Service
 @AllArgsConstructor
@@ -27,12 +27,14 @@ public class UserService {
 
     private final UserRepository userRepository;
     private final AuthenticationManager authenticationManager;
+    private final PasswordEncoder passwordEncoder;
 
     public ResponseEntity<String> registerUser(UserRegisterDTO userRegisterDTO) {
         User user;
         user = setUser(userRegisterDTO);
 
-        user.setPassword(new BCryptPasswordEncoder(12).encode(user.getPassword()));
+//        user.setPassword(new BCryptPasswordEncoder(12).encode(user.getPassword()));
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
         user.setCreatedAt(LocalDateTime.now());
         user.setUpdatedAt(LocalDateTime.now());
 
@@ -47,7 +49,7 @@ public class UserService {
                 authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(userLoginDTO.identifier(), userLoginDTO.password()));
 
         if (authentication.isAuthenticated()) {
-            return ResponseEntity.ok("Successfully logged-in");
+            return ResponseEntity.ok("Successfully logged in");
         }
         throw new BadCredentialsException("Incorrect username and/or password");    // custom exception later, maybe?
     }

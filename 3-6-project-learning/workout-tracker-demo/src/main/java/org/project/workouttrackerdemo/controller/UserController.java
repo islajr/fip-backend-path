@@ -16,12 +16,12 @@ public class UserController {
     private final UserService userService;
 
     @PostMapping("/register")
-    public ResponseEntity<String> registerUser(UserRegisterDTO userRegisterDTO) {
+    public ResponseEntity<String> registerUser(@RequestBody UserRegisterDTO userRegisterDTO) {
         return userService.registerUser(userRegisterDTO);
     }
 
     @PostMapping("/login")
-    public ResponseEntity<String> loginUser(UserLoginDTO userLoginDTO) {
+    public ResponseEntity<String> loginUser(@RequestBody UserLoginDTO userLoginDTO) {
         return userService.loginUser(userLoginDTO);
     }
 
