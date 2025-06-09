@@ -5,6 +5,7 @@ import org.project.workouttrackerdemo.dto.UserLoginDTO;
 import org.project.workouttrackerdemo.dto.UserRegisterDTO;
 import org.project.workouttrackerdemo.dto.UserUpdateDTO;
 import org.project.workouttrackerdemo.model.User;
+import org.project.workouttrackerdemo.model.UserPrincipal;
 import org.project.workouttrackerdemo.repository.UserRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,7 +19,6 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 
-import static org.project.workouttrackerdemo.config.Utilities.getIdentifier;
 import static org.project.workouttrackerdemo.config.Utilities.isUserAuthorized;
 import static org.project.workouttrackerdemo.dto.UserRegisterDTO.setUser;
 
@@ -28,6 +28,7 @@ public class UserService {
 
     private final UserRepository userRepository;
     private final AuthenticationManager authenticationManager;
+    private final JwtService jwtService;
 
     public ResponseEntity<String> registerUser(UserRegisterDTO userRegisterDTO) {
         User user;
@@ -39,7 +40,10 @@ public class UserService {
 
         userRepository.save(user);
 
-        return ResponseEntity.status(HttpStatus.CREATED).body("Successfully created user"); // maybe create a response DTO later.
+        return ResponseEntity.status(HttpStatus.CREATED).body("""
+                access token: %s
+                refresh token: %s
+                """.formatted(jwtService.generateToken(user.getEmail()), jwtService.generateRefreshToken(user.getEmail()))); // maybe create a response DTO later.
     }
 
     public ResponseEntity<String> loginUser(UserLoginDTO userLoginDTO) {
@@ -48,19 +52,17 @@ public class UserService {
                 authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(userLoginDTO.identifier(), userLoginDTO.password()));
 
         if (authentication.isAuthenticated()) {
-            return ResponseEntity.ok("Successfully logged in");
+            UserPrincipal principal = (UserPrincipal) authentication.getPrincipal();
+            return ResponseEntity.ok("""
+                    access token: %s
+                    refresh token: %s
+                    """.formatted(jwtService.generateToken(principal.getEmail()), jwtService.generateRefreshToken(principal.getEmail())));
         }
         throw new BadCredentialsException("Incorrect username and/or password");    // custom exception later, maybe?
     }
 
     public ResponseEntity<String> updateUser(UserUpdateDTO updateDTO) {
-        String username = getIdentifier();
-        User user;
-        if (username != null) {
-            user = userRepository.findUserByUsername(username);
-
-        }
-        return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Forbidden: Please login first");
+        return null;
     }
 
     public ResponseEntity<String> deleteUser(String username) {
