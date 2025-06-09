@@ -33,7 +33,6 @@ public class UserService {
     public ResponseEntity<String> registerUser(UserRegisterDTO userRegisterDTO) {
         User user;
         user = setUser(userRegisterDTO);
-        System.out.println(user.getPassword());
         user.setPassword(new BCryptPasswordEncoder(12).encode(user.getPassword()));
         user.setCreatedAt(LocalDateTime.now());
         user.setUpdatedAt(LocalDateTime.now());
