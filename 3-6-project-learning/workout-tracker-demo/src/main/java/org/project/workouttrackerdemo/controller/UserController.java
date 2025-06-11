@@ -36,7 +36,7 @@ public class UserController {
     }
 
     @PostMapping("/refresh")
-    public ResponseEntity<String> refreshToken(@RequestBody String token) {
-        return userService.refreshToken(token);
+    public ResponseEntity<String> refreshToken() {
+        return userService.refreshToken();
     }
 }
