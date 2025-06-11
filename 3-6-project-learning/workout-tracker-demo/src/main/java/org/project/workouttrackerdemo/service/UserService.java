@@ -29,6 +29,7 @@ public class UserService {
     private final UserRepository userRepository;
     private final AuthenticationManager authenticationManager;
     private final JwtService jwtService;
+    private final MyUserDetailsService myUserDetailsService;
 
     public ResponseEntity<String> registerUser(UserRegisterDTO userRegisterDTO) {
         User user;
@@ -73,5 +74,21 @@ public class UserService {
             return ResponseEntity.status(HttpStatus.NO_CONTENT).body("Successfully deleted user!");
         }
         throw new UsernameNotFoundException("No such user!");   // customize exception later.
+    }
+
+    public ResponseEntity<String> refreshToken(String token) {
+
+        // validate refresh token
+        String email = jwtService.extractEmail(token);
+        UserPrincipal userPrincipal = (UserPrincipal) myUserDetailsService.loadUserByUsername(email);
+
+        if (jwtService.verifyToken(token, userPrincipal)) {
+            return ResponseEntity.status(HttpStatus.OK).body("""
+                    access token: %s
+                    refresh token: %s
+                    """.formatted(jwtService.generateToken(email), jwtService.generateRefreshToken(email)));
+        }
+
+        return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Bad refresh token");
     }
 }

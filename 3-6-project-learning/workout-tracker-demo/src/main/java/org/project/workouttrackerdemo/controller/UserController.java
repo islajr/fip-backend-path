@@ -34,4 +34,9 @@ public class UserController {
     public ResponseEntity<String> deleteUser(@RequestParam String username) {
         return userService.deleteUser(username);
     }
+
+    @PostMapping("/refresh")
+    public ResponseEntity<String> refreshToken(@RequestBody String token) {
+        return userService.refreshToken(token);
+    }
 }
