@@ -19,6 +19,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 import static org.project.workouttrackerdemo.config.Utilities.isUserAuthorized;
 import static org.project.workouttrackerdemo.dto.UserRegisterDTO.setUser;
@@ -63,7 +64,27 @@ public class UserService {
     }
 
     public ResponseEntity<String> updateUser(UserUpdateDTO updateDTO) {
-        return null;
+        // currently only allowed to update the name, email, or password.
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        User user = userRepository.findUserByUsername(username);
+
+        if (user != null) {
+            if (!Objects.equals(updateDTO.name(), user.getName()) && updateDTO.name() != null) {
+                user.setName(updateDTO.name());
+            }
+            if (!Objects.equals(updateDTO.email(), user.getEmail()) && updateDTO.email() != null) {
+                user.setEmail(updateDTO.email());
+            }
+            if (!Objects.equals(updateDTO.password(), user.getPassword()) && updateDTO.password() != null) {
+                user.setPassword(updateDTO.password());
+            }
+
+            userRepository.save(user);
+            return ResponseEntity.ok("Successfully updated user.");
+        }
+
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No such user!");
+
     }
 
     public ResponseEntity<String> deleteUser(String username) {
