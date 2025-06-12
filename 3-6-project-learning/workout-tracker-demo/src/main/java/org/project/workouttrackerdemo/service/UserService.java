@@ -64,7 +64,9 @@ public class UserService {
     }
 
     public ResponseEntity<String> updateUser(UserUpdateDTO updateDTO) {
-        // currently only allowed to update the name, email, or password.
+        /*
+        * currently only allowed to update the name, email, or password.
+        * */
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
         User user = userRepository.findUserByUsername(username);
 
