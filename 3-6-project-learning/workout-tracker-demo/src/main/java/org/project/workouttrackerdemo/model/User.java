@@ -24,6 +24,7 @@ public class User {
     Role role_id;
     String level;
     Level level_id;
+    LocalDateTime last_seen;
 
     LocalDateTime createdAt;
     LocalDateTime updatedAt;
