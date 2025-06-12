@@ -38,11 +38,13 @@ Interns are required to show the implementation of said migrations using [Flyway
 
 Over the past week, I have developed some basic user features of [Workout Tracker Demo](https://github.com/islajr/fip-backend-path/tree/master/3-6-project-learning/workout-tracker-demo), including registering, login, updating, and deleting. Also, I have added token-based authentication using JWT and all of this, at this point, connects to a database on my local machine.
 
+Database migrations are important for maintaing version control over databases and ensuring that developers know the current state of their databases at every point in time.
+
 For the migration implementation, I used this database as a subject. The user database consists of important fields, such as username, email, password and role. The migrations and migration history are contained in the [migrations](https://github.com/islajr/fip-backend-path/tree/master/3-6-project-learning/workout-tracker-demo/src/main/resources/db/migration) folder of [Workout Tracker Demo](https://github.com/islajr/fip-backend-path/tree/master/3-6-project-learning/workout-tracker-demo).
 
 To implement the deliverables, I created two migration files:
 
--  [Baseline](https://github.com/islajr/fip-backend-path/blob/master/3-6-project-learning/workout-tracker-demo/src/main/resources/db/migration/V1__baseline.sql) migration file and because my database already existed, this file was empty.
--  [Add last seen](https://github.com/islajr/fip-backend-path/blob/master/3-6-project-learning/workout-tracker-demo/src/main/resources/db/migration/V2__add_last_seen_to_users.sql) migration file was created to really test the setup, and it effectively added a "last_seen" column to the database.
+- [Baseline](https://github.com/islajr/fip-backend-path/blob/master/3-6-project-learning/workout-tracker-demo/src/main/resources/db/migration/V1__baseline.sql) migration file and because my database already existed, this file was empty.
+- [Add last seen](https://github.com/islajr/fip-backend-path/blob/master/3-6-project-learning/workout-tracker-demo/src/main/resources/db/migration/V2__add_last_seen_to_users.sql) migration file was created to really test the setup, and it effectively added a "last_seen" column to the database.
 
 Running the application executed any pending migrations in ORDER, and added a "last_seen" column to the database entity.
