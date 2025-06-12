@@ -25,3 +25,24 @@ Interns are required to use important Hibernate annotations to design a database
 ### Implementation
 
 Within the context of the [Workout Tracker Demo](https://github.com/islajr/fip-backend-path/tree/e5506950ce61e0a1a3f4479a518e24073d7de974/3-6-project-learning/workout-tracker-demo), I am presenting the [User](https://github.com/islajr/fip-backend-path/blob/997a035f79aeb1d66d33d20d92b9e4d686201278/3-6-project-learning/workout-tracker-demo/src/main/java/org/project/workouttrackerdemo/model/User.java) entity that defines the details of each user of the application.
+
+## WEEK 5
+
+### Goals
+
+This week's lesson is centred on Database Migrations. It centres on implementing database migration with flyway. 
+
+Interns are required to show the implementation of said migrations using [Flyway](https://documentation.red-gate.com/fd/redgate-flyway-documentation-138346877.html).
+
+### Implementation
+
+Over the past week, I have developed some basic user features of [Workout Tracker Demo](https://github.com/islajr/fip-backend-path/tree/master/3-6-project-learning/workout-tracker-demo), including registering, login, updating, and deleting. Also, I have added token-based authentication using JWT and all of this, at this point, connects to a database on my local machine.
+
+For the migration implementation, I used this database as a subject. The user database consists of important fields, such as username, email, password and role. The migrations and migration history are contained in the [migrations](https://github.com/islajr/fip-backend-path/tree/master/3-6-project-learning/workout-tracker-demo/src/main/resources/db/migration) folder of [Workout Tracker Demo](https://github.com/islajr/fip-backend-path/tree/master/3-6-project-learning/workout-tracker-demo).
+
+To implement the deliverables, I created two migration files:
+
+-  [Baseline](https://github.com/islajr/fip-backend-path/blob/master/3-6-project-learning/workout-tracker-demo/src/main/resources/db/migration/V1__baseline.sql) migration file and because my database already existed, this file was empty.
+-  [Add last seen](https://github.com/islajr/fip-backend-path/blob/master/3-6-project-learning/workout-tracker-demo/src/main/resources/db/migration/V2__add_last_seen_to_users.sql) migration file was created to really test the setup, and it effectively added a "last_seen" column to the database.
+
+Running the application executed any pending migrations in ORDER, and added a "last_seen" column to the database entity.
