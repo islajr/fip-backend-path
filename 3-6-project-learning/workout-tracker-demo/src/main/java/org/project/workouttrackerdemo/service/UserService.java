@@ -16,6 +16,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -32,6 +33,7 @@ public class UserService {
     private final AuthenticationManager authenticationManager;
     private final JwtService jwtService;
     private final MyUserDetailsService myUserDetailsService;
+    private final PasswordEncoder passwordEncoder;
 
     public ResponseEntity<String> registerUser(UserRegisterDTO userRegisterDTO) {
         User user;
@@ -78,7 +80,7 @@ public class UserService {
                 user.setEmail(updateDTO.email());
             }
             if (!Objects.equals(updateDTO.password(), user.getPassword()) && updateDTO.password() != null) {
-                user.setPassword(updateDTO.password());
+                user.setPassword(passwordEncoder.encode(updateDTO.password()));
             }
 
             userRepository.save(user);
