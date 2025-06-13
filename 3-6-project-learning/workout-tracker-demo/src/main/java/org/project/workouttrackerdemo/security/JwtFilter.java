@@ -7,6 +7,8 @@ import jakarta.servlet.http.HttpServletResponse;
 import org.project.workouttrackerdemo.model.UserPrincipal;
 import org.project.workouttrackerdemo.service.JwtService;
 import org.project.workouttrackerdemo.service.MyUserDetailsService;
+import org.project.workouttrackerdemo.service.TokenService;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
@@ -20,10 +22,12 @@ public class JwtFilter extends OncePerRequestFilter {
 
     private final JwtService jwtService;
     private final MyUserDetailsService myUserDetailsService;
+    private final TokenService tokenService;
 
-    public JwtFilter(JwtService jwtService, MyUserDetailsService myUserDetailsService) {
+    public JwtFilter(JwtService jwtService, MyUserDetailsService myUserDetailsService, TokenService tokenService) {
         this.jwtService = jwtService;
         this.myUserDetailsService = myUserDetailsService;
+        this.tokenService = tokenService;
     }
 
     @Override
@@ -37,6 +41,9 @@ public class JwtFilter extends OncePerRequestFilter {
             token = authHeader.substring(AUTH_PREFIX.length());
             email = jwtService.extractEmail(token);
         }
+
+        if (!tokenService.isAllowed(token))
+            throw new BadCredentialsException("Expired or invalid token!");
 
         if (email != null && SecurityContextHolder.getContext().getAuthentication() == null) {
             UserPrincipal userPrincipal = (UserPrincipal) myUserDetailsService.loadUserByUsername(email);
