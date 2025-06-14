@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Setter
@@ -42,6 +43,18 @@ public class User {
 
     @NotNull
     LocalDateTime last_seen;
+
+    @OneToMany
+    List<Workout> created_workouts;
+
+    @OneToMany
+    List<WorkoutGroup> created_workout_groups;
+
+    @OneToMany
+    List<WorkoutSession> created_workout_sessions;
+
+    @OneToMany
+    List<WorkoutPlan> created_workout_plans;
 
     LocalDateTime createdAt;
     LocalDateTime updatedAt;
