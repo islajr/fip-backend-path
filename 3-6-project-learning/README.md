@@ -48,3 +48,25 @@ To implement the deliverables, I created two migration files:
 - [Add last seen](https://github.com/islajr/fip-backend-path/blob/master/3-6-project-learning/workout-tracker-demo/src/main/resources/db/migration/V2__add_last_seen_to_users.sql) migration file was created to really test the setup, and it effectively added a "last_seen" column to the database.
 
 Running the application executed any pending migrations in ORDER, and added a "last_seen" column to the database entity.
+
+## WEEK 6
+
+### Goals
+
+This week's lesson is on implementing service classes. It also focuses on Dependency Injection, Autowiring, and best practices for implementing business logic.
+
+Interns are required to practice dependency injection using constructors, setters and fields.
+
+### Implementation
+
+Given the goal of this week's lesson, I have implemented dependency injection severally across [Workout Tracker Demo](https://github.com/islajr/fip-backend-path/tree/master/3-6-project-learning/workout-tracker-demo).
+
+Practically every service class, constructor class, and entity model utilizes or contributes towards the use of dependency injection in some way.
+
+The following are examples of where dependency injection, getters and setters have been used across [Workout Tracker Demo](https://github.com/islajr/fip-backend-path/tree/master/3-6-project-learning/workout-tracker-demo)
+
+- [User Controller](https://github.com/islajr/fip-backend-path/blob/master/3-6-project-learning/workout-tracker-demo/src/main/java/org/project/workouttrackerdemo/controller/UserController.java): Utilizes **dependency injection** on **line 16** where the User Service class is injected.
+- [User Service](https://github.com/islajr/fip-backend-path/blob/master/3-6-project-learning/workout-tracker-demo/src/main/java/org/project/workouttrackerdemo/service/UserService.java): Utilizes **dependency injection** from **lines 32 - 36** where various service classes are injected.
+- [User Entity](https://github.com/islajr/fip-backend-path/blob/master/3-6-project-learning/workout-tracker-demo/src/main/java/org/project/workouttrackerdemo/model/User.java): Shows **best practices for creating getters and setters** from **lines 11 - 13** using the lombok dependency.
+
+-- *text highlighted in blue are links, and can be followed to reference what is being discussed within a particular context*
