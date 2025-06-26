@@ -1,16 +1,28 @@
 package org.project.workouttrackerdemo.dto;
 
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import org.project.workouttrackerdemo.model.Level;
 import org.project.workouttrackerdemo.model.Role;
 import org.project.workouttrackerdemo.model.User;
 
-import static org.project.workouttrackerdemo.config.Utilities.validateRole;
-
 public record UserRegisterDTO(
+
+        @NotNull(message = "username field is required.")
         String username,
+
+        @NotNull(message = "name field is required.")
         String name,
+
+        @NotNull(message = "email field is required.")
+        @Email(message = "please provide a valid email address")
         String email,
+
+        @NotNull(message = "password field is required")
+        @Size(min = 8, message = "minimum of eight characters")
         String password,
+
         String role,
         String level
 ) {
