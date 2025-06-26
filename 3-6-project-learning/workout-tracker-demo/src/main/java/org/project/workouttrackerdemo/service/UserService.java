@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import org.project.workouttrackerdemo.dto.UserLoginDTO;
 import org.project.workouttrackerdemo.dto.UserRegisterDTO;
 import org.project.workouttrackerdemo.dto.UserUpdateDTO;
+import org.project.workouttrackerdemo.exception.auth.NoSuchUserException;
 import org.project.workouttrackerdemo.model.User;
 import org.project.workouttrackerdemo.model.UserPrincipal;
 import org.project.workouttrackerdemo.repository.UserRepository;
@@ -62,7 +63,7 @@ public class UserService {
                     refresh token: %s
                     """.formatted(jwtService.generateToken(principal.getEmail()), jwtService.generateRefreshToken(principal.getEmail())));
         }
-        throw new BadCredentialsException("Incorrect username and/or password");    // custom exception later, maybe?
+        throw new BadCredentialsException("Incorrect username and/or password");
     }
 
     public ResponseEntity<String> updateUser(UserUpdateDTO updateDTO) {
@@ -87,7 +88,7 @@ public class UserService {
             return ResponseEntity.ok("Successfully updated user.");
         }
 
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No such user!");
+        throw new NoSuchUserException("No such user!");
 
     }
 
@@ -99,7 +100,7 @@ public class UserService {
             userRepository.delete(user);
             return ResponseEntity.status(HttpStatus.NO_CONTENT).body("Successfully deleted user!");
         }
-        throw new UsernameNotFoundException("No such user!");   // customize exception later.
+        throw new NoSuchUserException("No such user!");
     }
 
     public ResponseEntity<String> refreshToken() {

@@ -1,6 +1,7 @@
 package org.project.workouttrackerdemo.service;
 
 import lombok.AllArgsConstructor;
+import org.project.workouttrackerdemo.exception.auth.NoSuchUserException;
 import org.project.workouttrackerdemo.model.User;
 import org.project.workouttrackerdemo.model.UserPrincipal;
 import org.project.workouttrackerdemo.repository.UserRepository;
@@ -30,7 +31,7 @@ public class MyUserDetailsService implements UserDetailsService {
         }
 
         if (user == null) {
-            throw new RuntimeException("No such user");  // custom exception for incorrect or non-existent username
+            throw new NoSuchUserException("No such user");
         }
 
         return new UserPrincipal(user);
