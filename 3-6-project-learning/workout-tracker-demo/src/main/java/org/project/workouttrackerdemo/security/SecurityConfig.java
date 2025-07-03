@@ -33,8 +33,13 @@ public class SecurityConfig{
                 .formLogin(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(request -> request.requestMatchers(
                         "/user/register",
-                        "/user/login"
-                ).permitAll().anyRequest().authenticated())
+                        "/user/login",
+                        "/swagger-ui.html",
+                        "/swagger-ui/**",               // Swagger UI static resources
+                        "/v3/api-docs",
+                        "/v3/api-docs/**",
+                        "/webjars/**"
+                        ).permitAll().anyRequest().authenticated())
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
                 .httpBasic(Customizer.withDefaults())
                 .logout(logout ->
