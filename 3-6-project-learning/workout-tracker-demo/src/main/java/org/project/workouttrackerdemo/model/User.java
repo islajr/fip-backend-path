@@ -2,8 +2,7 @@ package org.project.workouttrackerdemo.model;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -12,6 +11,9 @@ import java.util.List;
 @Setter
 @Getter
 @Table(name = "users")
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class User {
 
     @Id
